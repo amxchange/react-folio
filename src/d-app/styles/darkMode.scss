@@ -1,0 +1,11 @@
+.dark .content-wrapper {
+    background-color: $white;
+    color: #fff;
+    transition: all 0.6s ease;
+}
+
+.dark {
+    --btnTxt: RGB(0, 160, 168);
+}
+
+/*---  Colors  ---*/

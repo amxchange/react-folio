@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "es6",
+        "module": "commonjs",
+        "jsx": "react",
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": "./",
+        "paths": {
+            "@argon-ui/*": ["src/shared/layouts/Argon-ui/*"],
+
+            "@d-app/*": ["src/d-app/*"],
+            "@m-app/*": ["src/m-app/*"],
+            "@shared/*": ["src/shared/*"],
+            "@src/*": ["src/*"]
+        }
+    },
+    "exclude": ["node_modules", "dist"]
+}
