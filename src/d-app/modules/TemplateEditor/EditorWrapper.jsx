@@ -18,7 +18,8 @@ import EditorContext from "@d-app/modules/TemplateEditor/MonacoEditor/EditorCont
 
 const EDITOR_LANGUAGE_OPTIONS = [
     { label: "HTML", value: "html" },
-    { label: "Javascript", value: "javascript" }
+    // { label: "Javascript", value: "javascript" },
+    { label: "Handlebars", value: "handlebars" }
 ];
 const EDITOR_THEME_OPTIONS = [
     { label: "Light", value: "light" },
@@ -155,7 +156,15 @@ const EditorWrapper = props => {
                                 </TabPane>
                                 <TabPane tab="Preview" key="preview">
                                     <div className={"tab-content"}>
-                                        <EditorPreview isViewed={activeTab === "preview"} value={value} />
+                                        <EditorPreview
+                                            isViewed={activeTab === "preview"}
+                                            value={value}
+                                            data={
+                                                completetionItemsJsonStr
+                                                    ? JSON.parse(completetionItemsJsonStr)
+                                                    : undefined
+                                            }
+                                        />
                                     </div>
                                 </TabPane>
                             </Tabs>

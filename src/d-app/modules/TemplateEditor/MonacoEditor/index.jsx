@@ -6,7 +6,7 @@ const getCompletionItem = ({ path, key, value, kind, range }) => ({
     label: path,
     kind,
     documentation: `${path} = ${JSON.stringify(value)}`,
-    insertText: key,
+    insertText: path,
     range
 });
 
@@ -31,14 +31,27 @@ const MonacoEditor = props => {
 
     const editorRef = useRef(null);
     const monacoRef = useRef(null);
+    const disposeCompletionItems = useRef(null);
+
+    useEffect(() => {
+        return () => {
+            if (disposeCompletionItems.current) {
+                disposeCompletionItems.current.dispose();
+            }
+        };
+    }, []);
 
     useEffect(() => {
         if (completetionItemsJsonStr) {
             let completetionItemsObj = JSON.parse(completetionItemsJsonStr);
-            console.log("registering completion items", completetionItemsObj);
 
-            monacoRef.current.languages.registerCompletionItemProvider("html", {
-                triggerCharacters: ["."],
+            if (disposeCompletionItems.current) {
+                disposeCompletionItems.current.dispose();
+            }
+
+            console.log("registering completion items", completetionItemsObj);
+            disposeCompletionItems.current = monacoRef.current.languages.registerCompletionItemProvider("html", {
+                triggerCharacters: ["{", "."],
                 provideCompletionItems: function (model, position) {
                     var textUntilPosition = model.getValueInRange({
                         startLineNumber: position.lineNumber,
@@ -46,7 +59,8 @@ const MonacoEditor = props => {
                         endLineNumber: position.lineNumber,
                         endColumn: position.column
                     });
-                    var match = textUntilPosition.match(/\$\{data.[\w.]*$/);
+                    // var match = textUntilPosition.match(/\$\{data.[\w.]*$/);
+                    var match = textUntilPosition.match(/\{\{[\w.]*$/);
                     if (!match) {
                         return {
                             suggestions: []
@@ -105,3 +119,10 @@ const MonacoEditor = props => {
 };
 
 export default MonacoEditor;
+
+/**
+ * https://github.com/portabletext/react-portabletext
+ * https://www.npmjs.com/package/react-simple-code-editor
+ * https://codesandbox.io/s/u6vhk?file=/src/Editor.js
+ * https://codesandbox.io/s/react-live-editor-jgm04?from-embed=&file=/src/editor.js
+ */

@@ -348,8 +348,8 @@ const TemplateEditor = props => {
     };
 
     const onAction = async (req, type) => {
-        req.channel = channelRef.value;
-        req.language = languageRef.value;
+        req.channel = channelVal?.value;
+        req.language = languageVal?.value;
         req.templatePath = templateNameSelectVal.path;
         let actionTypeMeta = {
             CREATE: { label: "Create", method: "post" },
@@ -376,7 +376,7 @@ const TemplateEditor = props => {
         setTemplateNameVal("");
         setTemplateNameSelectVal("");
         setTemplateData("");
-        if (!avoidResetTemplates) fetchTemplates();
+        if (!avoidResetTemplates) fetchTemplates({ channel: null, language: null });
     };
 
     return (
