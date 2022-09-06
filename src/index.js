@@ -22,7 +22,7 @@ const mApp = lazy(() => import(/* webpackChunkName: "mApp" */ "@m-app"));
 
 __webpack_public_path__ =
     window.location.href.indexOf("github.io") > -1
-        ? `https://cherrybase.github.io/cherry-insights/`
+        ? `https://amxchange.github.io/react-folio/`
         : `${window.CONST?.remoteJsUrl || "http://localhost:9009"}/dist/`;
 
 const Root = () => (
