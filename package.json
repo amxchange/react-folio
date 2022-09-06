@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "amx web components repo",
   "main": "index.js",
+  "homepage": "https://amxchange.github.io/react-folio",
   "scripts": {
     "dev": "node webpack.devServer.js",
     "stage": "webpack --mode production --env staging=true",
