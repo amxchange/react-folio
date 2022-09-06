@@ -20,11 +20,15 @@ const argonUi = lazy(() => import(/* webpackChunkName: "argonUi" */ "@argon-ui")
 const dApp = lazy(() => import(/* webpackChunkName: "dApp" */ "@d-app")); // lazy(() => import("@d-app")); for unnamed chunks.
 const mApp = lazy(() => import(/* webpackChunkName: "mApp" */ "@m-app"));
 
-__webpack_public_path__ = `${window.CONST?.remoteJsUrl || "http://localhost:9009"}/dist/`;
+__webpack_public_path__ =
+    window.location.href.indexOf("github.io") > -1
+        ? `https://cherrybase.github.io/cherry-insights/`
+        : `${window.CONST?.remoteJsUrl || "http://localhost:9009"}/dist/`;
 
 const Root = () => (
     <Provider store={store}>
-        <BrowserRouter>
+        <BrowserRouter basename="/react-folio">
+            {/* https://github.com/facebook/create-react-app/issues/1765 */}
             <RootRoutes />
         </BrowserRouter>
     </Provider>
