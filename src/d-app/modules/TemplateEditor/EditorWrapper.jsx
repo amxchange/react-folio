@@ -17,9 +17,9 @@ import EditorPreview from "@d-app/modules/TemplateEditor/MonacoEditor/EditorPrev
 import EditorContext from "@d-app/modules/TemplateEditor/MonacoEditor/EditorContext";
 
 const EDITOR_LANGUAGE_OPTIONS = [
-    { label: "HTML", value: "html" },
-    // { label: "Javascript", value: "javascript" },
-    { label: "Handlebars", value: "handlebars" }
+    { label: "handlebars", value: "handlebars" },
+    { label: "html", value: "html" }
+    // { label: "javascript", value: "javascript" }
 ];
 const EDITOR_THEME_OPTIONS = [
     { label: "Light", value: "light" },
@@ -29,7 +29,7 @@ const EDITOR_THEME_OPTIONS = [
 const EditorWrapper = props => {
     const { title = "", mode, collapse = false, setCollapse, data = {}, onAction, reset } = props;
 
-    const [value, setValue] = useState("");
+    const [value, setValue] = useState("<!-- Please ensure to wrap content inside a valid html tag --!>");
     const [completetionItemsJsonStr, setCompletetionItemsJsonStr] = useState("");
 
     const emailRef = useRef();
