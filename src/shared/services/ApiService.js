@@ -121,5 +121,10 @@ export class ApiService {
 }
 
 export const Api = {
-    root: new ApiService({ prefix: remoteServerUrl + "/api/v1", responseBuilder: res => res.data })
+    root: new ApiService({
+        prefix:
+            (window.location.href.indexOf("github.io") > -1 ? "https://node-folio.amxremit.com" : remoteServerUrl) +
+            "/api/v1",
+        responseBuilder: res => res.data
+    })
 };
