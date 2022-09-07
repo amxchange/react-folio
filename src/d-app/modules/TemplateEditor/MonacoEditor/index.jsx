@@ -50,36 +50,44 @@ const MonacoEditor = props => {
             }
 
             console.log("registering completion items", completetionItemsObj);
-            disposeCompletionItems.current = monacoRef.current.languages.registerCompletionItemProvider("html", {
-                triggerCharacters: ["{", "."],
-                provideCompletionItems: function (model, position) {
-                    var textUntilPosition = model.getValueInRange({
-                        startLineNumber: position.lineNumber,
-                        startColumn: 1,
-                        endLineNumber: position.lineNumber,
-                        endColumn: position.column
-                    });
-                    // var match = textUntilPosition.match(/\$\{data.[\w.]*$/);
-                    var match = textUntilPosition.match(/\{\{[\w.]*$/);
-                    if (!match) {
+            disposeCompletionItems.current = monacoRef.current.languages.registerCompletionItemProvider(
+                ["html", "handlebars"],
+                {
+                    triggerCharacters: ["{", "."],
+                    provideCompletionItems: function (model, position) {
+                        var textUntilPosition = model.getValueInRange({
+                            startLineNumber: position.lineNumber,
+                            startColumn: 1,
+                            endLineNumber: position.lineNumber,
+                            endColumn: position.column
+                        });
+                        // var match = textUntilPosition.match(/\$\{data.[\w.]*$/);
+                        var match = textUntilPosition.match(/\{\{[\w.]*$/);
+                        if (!match) {
+                            return {
+                                suggestions: []
+                            };
+                        }
+                        var word = model.getWordUntilPosition(position);
+                        var range = {
+                            startLineNumber: position.lineNumber,
+                            endLineNumber: position.lineNumber,
+                            startColumn: word.startColumn,
+                            endColumn: word.endColumn
+                        };
+                        let suggestionKind = monacoRef.current.languages.CompletionItemKind.Function;
+                        let suggestions = convertObjectIntoArrayOfKeys(
+                            completetionItemsObj,
+                            null,
+                            suggestionKind,
+                            range
+                        );
                         return {
-                            suggestions: []
+                            suggestions
                         };
                     }
-                    var word = model.getWordUntilPosition(position);
-                    var range = {
-                        startLineNumber: position.lineNumber,
-                        endLineNumber: position.lineNumber,
-                        startColumn: word.startColumn,
-                        endColumn: word.endColumn
-                    };
-                    let suggestionKind = monacoRef.current.languages.CompletionItemKind.Function;
-                    let suggestions = convertObjectIntoArrayOfKeys(completetionItemsObj, null, suggestionKind, range);
-                    return {
-                        suggestions
-                    };
                 }
-            });
+            );
         }
     }, [completetionItemsJsonStr]);
 
