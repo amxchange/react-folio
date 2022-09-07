@@ -108,8 +108,9 @@ import Navbar from "@shared/modules/layout/Navbar";
 
 1. Clone the repository: `git clone https://github.com/amxchange/react-folio.git`
 2. cd to the directory
-3. Install the dependencies: `npm install`
-4. Run the application: `npm run dev`
+3. add .env file shared on email
+4. Install the dependencies: `npm install`
+5. Run the application: `npm run dev`
 
 
 
