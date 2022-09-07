@@ -104,6 +104,12 @@ import "./style.scss";
 import Navbar from "@shared/modules/layout/Navbar";
 ```
 
-## Further
+## Installation
 
-Have added few Components with '-Example' suffix for reference.
+1. Clone the repository: `git clone https://github.com/amxchange/react-folio.git`
+2. cd to the directory
+3. Install the dependencies: `npm install`
+4. Run the application: `npm run dev`
+
+
+
