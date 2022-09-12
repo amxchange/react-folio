@@ -53,7 +53,8 @@ module.exports = (env, options) => {
                 return "[name].bundle.js";
             },
             chunkFilename: "[name].chunk.js",
-            publicPath: isDevelopment ? PATH : "" // otherwise `/${buildFolder}`
+            publicPath: isDevelopment ? PATH : "", // otherwise `/${buildFolder}`
+            crossOriginLoading: "anonymous"
         },
         devtool: "source-map",
         resolve: {
