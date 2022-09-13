@@ -1,1 +1,48 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/><link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet"/><meta name="theme-color" content="#00cc99\"/><meta name="msapplication-navbutton-color" content="#00cc99"/><meta name="apple-mobile-web-app-status-bar-style" content="#00cc99"/><title>amx ui</title><base href="https://amxchange.github.io/react-folio/"><link rel="icon" href="favicon.ico"><script defer="defer" src="main.bundle.js"></script><link href="main.css" rel="stylesheet"></head><body><div id="app"></div><script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script></body></html>
+<!doctype html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/><link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet"/><meta name="theme-color" content="#00cc99\"/><meta name="msapplication-navbutton-color" content="#00cc99"/><meta name="apple-mobile-web-app-status-bar-style" content="#00cc99"/><title>amx ui</title><link rel="icon" href="favicon.ico"><script defer="defer" src="main.bundle.js"></script><link href="main.css" rel="stylesheet"></head><body><div id="app"></div><script>// json util
+            function getJson(str) {
+                var json;
+                try {
+                    json = JSON.parse(str);
+                } catch (e) {
+                    console.error("Error in config: ", e);
+                    return false;
+                }
+                return json;
+            }
+
+            window.CONST = {
+                dev: false,
+                remoteServerUrl: "https://node-folio.amxremit.com", // "http://localhost:3004"
+                remoteJsUrl: "https://amxchange.github.io/react-folio" // "http://localhost:9009/dist"
+            };
+
+            var config = getJson(window.localStorage.getItem("debugConfig"));
+
+            if (config) {
+                window.CONST.remoteServerUrl = config.remoteServerUrl || window.CONST.remoteServerUrl;
+                window.CONST.remoteJsUrl = config.remoteJsUrl || window.CONST.remoteJsUrl;
+            }
+
+            // add base and css and js and favicon
+            var head = document.getElementsByTagName("head")[0];
+
+            var base = document.createElement("base");
+            base.href = `${window.CONST.remoteJsUrl}/`;
+            head.appendChild(base);
+
+            // var js = document.createElement("script");
+            // js.type = "text/javascript";
+            // js.src = window.CONST.remoteJsUrl + "/main.bundle.js";
+            // head.appendChild(js);
+
+            // var css = document.createElement("link");
+            // css.rel = "stylesheet";
+            // css.href = window.CONST.remoteJsUrl + "/main.css";
+            // head.appendChild(css);
+
+            // var link = document.createElement("link");
+            // link.type = "image/x-icon";
+            // link.rel = "shortcut icon";
+            // link.href = window.CONST.remoteJsUrl + "/favicon.ico";
+            // head.appendChild(link);
+            //</script><script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script></body></html>
