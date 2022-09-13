@@ -20,9 +20,7 @@ const argonUi = lazy(() => import(/* webpackChunkName: "argonUi" */ "@argon-ui")
 const dApp = lazy(() => import(/* webpackChunkName: "dApp" */ "@d-app")); // lazy(() => import("@d-app")); for unnamed chunks.
 const mApp = lazy(() => import(/* webpackChunkName: "mApp" */ "@m-app"));
 
-__webpack_public_path__ = isViewedOnGhPages
-    ? `https://amxchange.github.io/react-folio/`
-    : `${window.CONST?.remoteJsUrl || "http://localhost:9009/dist"}/`;
+__webpack_public_path__ = `${window.CONST?.remoteJsUrl || ""}/`;
 
 const Root = () => (
     <Provider store={store}>

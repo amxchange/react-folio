@@ -10,6 +10,7 @@ console.log(`
     FROM :: ${window.CONST?.remoteJsUrl}
     VERSION :: ${_process.env.version || "-"}
     BUILD TIME :: ${_process.env.timestamp ? new Date(_process.env.timestamp) : "-"}
+    SERVER :: ${window.CONST?.remoteServerUrl}
     ENV :: ${_process.env.NODE_ENV}
     ###############################################################################
 `);
