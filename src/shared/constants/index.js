@@ -10,3 +10,5 @@ export const isSafari =
 export const dAppUrlPrefix = "/d-app";
 
 export const mAppUrlPrefix = "/m-app";
+
+export const isViewedOnGhPages = window.location.href.indexOf("github.io/react-folio") > -1;

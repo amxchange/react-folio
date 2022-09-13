@@ -11,7 +11,7 @@ import "@argon-ui/assets/scss/argon-dashboard-react.scss";
 import "@shared/styles/index.scss"; // shared styles are temporarily imported here in root index, later need to ship them with their respected modules. #TODO
 import "./index.css";
 
-import { isMobi, dAppUrlPrefix, mAppUrlPrefix } from "@shared/constants";
+import { isMobi, dAppUrlPrefix, mAppUrlPrefix, isViewedOnGhPages } from "@shared/constants";
 import { store } from "./store";
 import DataService from "@shared/services/DataService";
 import DataStore from "@shared/services/DataStore";
@@ -20,14 +20,13 @@ const argonUi = lazy(() => import(/* webpackChunkName: "argonUi" */ "@argon-ui")
 const dApp = lazy(() => import(/* webpackChunkName: "dApp" */ "@d-app")); // lazy(() => import("@d-app")); for unnamed chunks.
 const mApp = lazy(() => import(/* webpackChunkName: "mApp" */ "@m-app"));
 
-__webpack_public_path__ =
-    window.location.href.indexOf("github.io") > -1
-        ? `https://amxchange.github.io/react-folio/`
-        : `${window.CONST?.remoteJsUrl || "http://localhost:9009/dist"}/`;
+__webpack_public_path__ = isViewedOnGhPages
+    ? `https://amxchange.github.io/react-folio/`
+    : `${window.CONST?.remoteJsUrl || "http://localhost:9009/dist"}/`;
 
 const Root = () => (
     <Provider store={store}>
-        <BrowserRouter basename="/react-folio">
+        <BrowserRouter {...(isViewedOnGhPages ? { basename: "/react-folio" } : {})}>
             {/* https://github.com/facebook/create-react-app/issues/1765 */}
             <RootRoutes />
         </BrowserRouter>

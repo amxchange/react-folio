@@ -1,6 +1,7 @@
 import axios from "axios";
 import { serializeParams } from "@shared/utils";
 import { remoteServerUrl } from "@d-app/config";
+import { isViewedOnGhPages } from "@shared/constants";
 
 export class ApiService {
     constructor({ prefix = "", responseBuilder = res => res } = {}) {
@@ -122,9 +123,7 @@ export class ApiService {
 
 export const Api = {
     root: new ApiService({
-        prefix:
-            (window.location.href.indexOf("github.io") > -1 ? "https://node-folio.amxremit.com" : remoteServerUrl) +
-            "/api/v1",
+        prefix: (isViewedOnGhPages ? "https://node-folio.amxremit.com" : remoteServerUrl) + "/api/v1",
         responseBuilder: res => res.data
     })
 };
