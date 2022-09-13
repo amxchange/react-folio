@@ -9,7 +9,8 @@
     "stage": "webpack --mode production --env staging=true",
     "prod": "webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "predeploy": "npm run prod && cp dist/index.html dist/404.html",
+    "gh-prod": "webpack --mode production --env ghPages=true",
+    "predeploy": "npm run gh-prod && cp dist/index.html dist/404.html",
     "deploy": "gh-pages -d dist"
   },
   "keywords": [

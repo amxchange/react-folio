@@ -147,7 +147,7 @@ module.exports = (env, options) => {
             new CleanWebpackPlugin(),
             new HtmlWebpackPlugin({
                 template: "./src/index.html",
-                base: isDevelopment ? "" : "https://amxchange.github.io/react-folio/", //TODO- make dynamic
+                base: !isDevelopment && env.ghPages === "true" ? "https://amxchange.github.io/react-folio/" : "", //TODO- can expect base url in args itself
                 filename: "index.html",
                 favicon: "./src/shared/styles/favicon.ico"
             }),
