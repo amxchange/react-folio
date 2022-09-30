@@ -13,12 +13,18 @@ function isJsonString(str) {
 }
 
 function EditorContext(props) {
-    const { setCompletetionItemsJsonStr } = props;
+    const { completetionItemsJsonStr, setCompletetionItemsJsonStr } = props;
     const [value, setValue] = useState("");
     const [isRegistered, setIsRegistered] = useState(false);
 
+    useEffect(() => {
+        if (completetionItemsJsonStr && !value) {
+            setValue(completetionItemsJsonStr);
+        }
+    }, [completetionItemsJsonStr]);
+
     const handleRegister = () => {
-        if (!value) return ToastUtil.info("Please enter value to proceed");
+        if (!value) return ToastUtil.info("Please enter value or '{}' to proceed");
         if (isJsonString(value)) {
             setIsRegistered(true);
             setCompletetionItemsJsonStr(value);
@@ -63,7 +69,7 @@ function EditorContext(props) {
                                     ToastUtil.error("Invalid input value");
                                 }
                             } else {
-                                ToastUtil.info("Please enter value to proceed");
+                                ToastUtil.info("Please enter value or '{}' to proceed");
                             }
                         }}
                         size="sm"

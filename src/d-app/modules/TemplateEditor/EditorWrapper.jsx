@@ -29,7 +29,7 @@ const EDITOR_THEME_OPTIONS = [
 const EditorWrapper = props => {
     const { title = "", mode, collapse = false, setCollapse, data = {}, onAction, reset } = props;
 
-    const [value, setValue] = useState("<!-- Please ensure to wrap content inside a valid html tag --!>");
+    const [value, setValue] = useState("");
     const [completetionItemsJsonStr, setCompletetionItemsJsonStr] = useState("");
 
     const emailRef = useRef();
@@ -49,6 +49,11 @@ const EditorWrapper = props => {
         if (mode === "UPDATE") {
             const content = atob(data.content);
             setValue(content);
+            if (data.content_data) {
+                setTimeout(() => {
+                    setCompletetionItemsJsonStr(JSON.stringify(data.content_data, null, 4));
+                }, 1000);
+            }
         }
     }, [data.content]);
 
@@ -72,7 +77,13 @@ const EditorWrapper = props => {
         let payload = {
             email: emailVal,
             commitMessage: commitMsgVal,
-            ...(type !== "DELETE" ? { content: btoa(value), content_json } : {})
+            ...(type !== "DELETE"
+                ? {
+                      content: btoa(value),
+                      content_json,
+                      content_data: completetionItemsJsonStr ? JSON.parse(completetionItemsJsonStr) : {}
+                  }
+                : {})
         };
 
         try {
@@ -151,7 +162,10 @@ const EditorWrapper = props => {
                                 </TabPane>
                                 <TabPane tab="Context" key="context">
                                     <div className={"tab-content"}>
-                                        <EditorContext setCompletetionItemsJsonStr={setCompletetionItemsJsonStr} />
+                                        <EditorContext
+                                            completetionItemsJsonStr={completetionItemsJsonStr}
+                                            setCompletetionItemsJsonStr={setCompletetionItemsJsonStr}
+                                        />
                                     </div>
                                 </TabPane>
                                 <TabPane tab="Preview" key="preview">
