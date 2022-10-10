@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Row, Col, Button, Card, CardHeader, CardFooter, Collapse } from "reactstrap";
 import Tabs, { TabPane } from "rc-tabs";
-import "rc-tabs/assets/index.css";
 import FormField from "@d-app/modules/utils/FormField";
 import { ToastUtil } from "@shared/modules/utils";
 import {
@@ -120,7 +119,7 @@ const EditorWrapper = props => {
                         <Col xs="12">
                             <Tabs onChange={key => setActiveTab(key)} tabBarGutter={30}>
                                 <TabPane tab="Editor" key="editor">
-                                    <div className={"tab-content"}>
+                                    <div className={"tab-content mt-2"}>
                                         <Row className="tab-content-header">
                                             <Col xs="2">
                                                 <FormField
@@ -165,6 +164,7 @@ const EditorWrapper = props => {
                                         <EditorContext
                                             completetionItemsJsonStr={completetionItemsJsonStr}
                                             setCompletetionItemsJsonStr={setCompletetionItemsJsonStr}
+                                            properties={data.properties}
                                         />
                                     </div>
                                 </TabPane>
@@ -178,6 +178,7 @@ const EditorWrapper = props => {
                                                     ? JSON.parse(completetionItemsJsonStr)
                                                     : undefined
                                             }
+                                            properties={data.properties}
                                         />
                                     </div>
                                 </TabPane>

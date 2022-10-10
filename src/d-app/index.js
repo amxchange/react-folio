@@ -1,6 +1,8 @@
 import React from "react";
 
 import "@d-app/styles/index.scss";
+import "rc-tabs/assets/index.css";
+
 import Routes from "@d-app/routes";
 import { ErrorBoundary, ToastUtil, GlobalModal } from "@shared/modules/utils";
 
