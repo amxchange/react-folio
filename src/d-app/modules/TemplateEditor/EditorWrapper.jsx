@@ -64,6 +64,9 @@ const EditorWrapper = props => {
         try {
             let value_without_th_expressions = maskThymeleafExpressions(value);
             let content_dom = convertStringToNode(value_without_th_expressions);
+            if (content_dom.textContent.includes("This page contains the following errors:")) {
+                return ToastUtil.error(content_dom.textContent);
+            }
             content_json = toJSON(content_dom);
 
             // let content_dom_again = toDOM(content_json);
