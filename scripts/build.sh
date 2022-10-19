@@ -1,4 +1,4 @@
-rm -rf dist/*
+rm -rf dist
 mkdir dist
 npm run prod --env.VERSION_NO=$1
 
