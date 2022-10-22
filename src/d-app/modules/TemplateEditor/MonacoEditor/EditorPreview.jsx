@@ -17,7 +17,7 @@ const replaceVariables = (result, __properties) => {
 };
 
 Handlebars.registerHelper("_prop", (key, options) => {
-    let fallback = "__";
+    let fallback = "___";
 
     if (typeof key !== "string") return fallback;
 
@@ -31,6 +31,10 @@ Handlebars.registerHelper("_prop", (key, options) => {
 
     if (result.includes("${")) {
         result = replaceVariables(result, __properties);
+    }
+
+    if (result.includes(fallback)) {
+        ToastUtil.info(`Property '${key}' was not found. Please re-check property name`);
     }
 
     return result;

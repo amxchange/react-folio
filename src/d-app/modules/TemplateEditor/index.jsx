@@ -98,9 +98,19 @@ const TemplateEditor = props => {
         }
     };
 
+    const fetchProperties = async () => {
+        try {
+            let res = await Api.root.get(`/template/properties`, { tenant: tenantVal.value });
+            setTemplateData(prev => ({ ...prev, properties: res.data.properties }));
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     const onProceed = () => {
         if (editorMode.value === "CREATE") {
             if (!templateNameRef.current.isValid()) return;
+            fetchProperties();
             setShowEditor(true);
         } else {
             fetchTemplate();

@@ -65,7 +65,11 @@ const EditorWrapper = props => {
             let value_without_th_expressions = maskThymeleafExpressions(value);
             let content_dom = convertStringToNode(value_without_th_expressions);
             if (content_dom.textContent.includes("This page contains the following errors:")) {
-                return ToastUtil.error(content_dom.textContent);
+                let m = content_dom.textContent.split(":").map(c => c.trim());
+                m.pop();
+                m.push("TIP: Try to wrap your content inside a valid HTML tag / node");
+                m = m.join(" : ");
+                return ToastUtil.error(m);
             }
             content_json = toJSON(content_dom);
 
