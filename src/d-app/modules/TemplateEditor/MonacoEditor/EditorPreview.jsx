@@ -21,7 +21,7 @@ Handlebars.registerHelper("_prop", (key, options) => {
 
     if (typeof key !== "string") return fallback;
 
-    let { __properties = {} } = options.data?.root || {};
+    let { __properties = {} } = options.data ? options.data.root || {} : {};
     let result = `${__properties[key] || fallback}`;
 
     if (result.includes("@")) {
