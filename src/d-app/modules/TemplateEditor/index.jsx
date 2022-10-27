@@ -6,39 +6,21 @@ import EditorWrapper from "@d-app/modules/TemplateEditor/EditorWrapper";
 import { Api } from "@shared/services/ApiService";
 import { ToastUtil } from "@shared/modules/utils";
 
-const REPO_URL = `https://gitlab.com/almullagroup/amx/owa-content-v2.git`;
-const BRANCH_NAME = `main`;
-const EDITOR_MODE_OPTIONS = [
-    { label: "Update", value: "UPDATE" },
-    { label: "Create", value: "CREATE" }
-];
-const CHANNEL_OPTIONS = [
-    { label: "Sms", value: "sms" },
-    { label: "Push Notification", value: "push" }
-];
-const LANGUAGE_OPTIONS = [
-    { label: "English", value: "en" },
-    { label: "Arabic", value: "ar" }
-];
-const TENANT_OPTIONS = [
-    { label: "KWT", value: "kwt" },
-    { label: "OMN", value: "omn" }
-];
-
 const TemplateEditor = props => {
     const [loading, setLoading] = useState(false);
 
-    const [editorMode, setEditorMode] = useState(EDITOR_MODE_OPTIONS[0]);
+    const [meta, setMeta] = useState({});
+
+    const [editorMode, setEditorMode] = useState(null);
 
     const tenantRef = useRef();
-    const [tenantVal, setTenantVal] = useState(TENANT_OPTIONS[0]);
+    const [tenantVal, setTenantVal] = useState(null);
 
     const channelRef = useRef();
     const [channelVal, setChannelVal] = useState("");
 
     const languageRef = useRef();
     const [languageVal, setLanguageVal] = useState("");
-    const [languageOpts, setLanguageOpts] = useState(LANGUAGE_OPTIONS);
 
     const templateNameRef = useRef();
     const [templateNameVal, setTemplateNameVal] = useState("");
@@ -53,11 +35,31 @@ const TemplateEditor = props => {
     const [editorCollapse, setEditorCollapse] = useState(false);
 
     useEffect(() => {
-        fetchTemplates();
+        const init = async () => {
+            let _meta = await fetchMeta();
+            setMeta(_meta);
+            setEditorMode(_meta.editorModeOptions[0]);
+            setTenantVal(_meta.tenantOptions[0]);
+
+            fetchTemplates();
+        };
+
+        init();
     }, []);
 
+    const fetchMeta = async () => {
+        let meta = {};
+        try {
+            let res = await Api.root.get("/pub/meta");
+            meta = res.data;
+        } catch (error) {
+            console.error(error);
+        }
+        return meta;
+    };
+
     const fetchTemplates = async ({ tenant, channel, language } = {}) => {
-        if (editorMode.value === "CREATE") return;
+        if (editorMode?.value === "CREATE") return;
 
         let req = {
             tenant: tenant === undefined ? tenantVal?.value : tenant,
@@ -108,7 +110,7 @@ const TemplateEditor = props => {
     };
 
     const onProceed = () => {
-        if (editorMode.value === "CREATE") {
+        if (editorMode?.value === "CREATE") {
             if (!templateNameRef.current.isValid()) return;
             fetchProperties();
             setShowEditor(true);
@@ -144,7 +146,7 @@ const TemplateEditor = props => {
 
     const reset = ({ avoidResetTemplates } = {}) => {
         setShowEditor(false);
-        setTenantVal(TENANT_OPTIONS[0]);
+        setTenantVal(meta.tenantOptions[0]);
         setChannelVal("");
         setLanguageVal("");
         setTemplateNameVal("");
@@ -174,7 +176,7 @@ const TemplateEditor = props => {
                                                     setEditorMode(newVal);
                                                     reset({ avoidResetTemplates: true });
                                                 }}
-                                                options={EDITOR_MODE_OPTIONS}
+                                                options={meta.editorModeOptions}
                                                 containerClass={"mb-0"}
                                             />
                                         </Col>
@@ -189,10 +191,14 @@ const TemplateEditor = props => {
                         </CardHeader>
                         <CardBody>
                             <Form>
-                                <h6 className="heading-small text-muted mb-0">Gitlab details</h6>
-                                <p style={{ opacity: "0.5" }}>
-                                    &#62;&#62; {REPO_URL} &nbsp;&nbsp;&#62;&#62; {BRANCH_NAME}
-                                </p>
+                                {meta.repoUrl && meta.branchName && (
+                                    <>
+                                        <h6 className="heading-small text-muted mb-0">Gitlab details</h6>
+                                        <p style={{ opacity: "0.5" }}>
+                                            &#62;&#62; {meta.repoUrl} &nbsp;&nbsp;&#62;&#62; {meta.branchName}
+                                        </p>
+                                    </>
+                                )}
                                 <div className="pl-lg-4">
                                     <Row>
                                         <Col lg="2">
@@ -206,7 +212,7 @@ const TemplateEditor = props => {
                                                     setTenantVal(newVal);
                                                     fetchTemplates({ tenant: newVal?.value || null });
                                                 }}
-                                                options={TENANT_OPTIONS}
+                                                options={meta.tenantOptions}
                                                 disabled={showEditor}
                                             />
                                         </Col>
@@ -221,7 +227,7 @@ const TemplateEditor = props => {
                                                     setChannelVal(newVal);
                                                     fetchTemplates({ channel: newVal?.value || null });
                                                 }}
-                                                options={CHANNEL_OPTIONS}
+                                                options={meta.channelOptions}
                                                 isClearable={true}
                                                 disabled={showEditor}
                                             />
@@ -237,13 +243,13 @@ const TemplateEditor = props => {
                                                     setLanguageVal(newVal);
                                                     fetchTemplates({ language: newVal?.value || null });
                                                 }}
-                                                options={languageOpts}
+                                                options={meta.languageOptions}
                                                 isClearable={true}
                                                 disabled={showEditor}
                                             />
                                         </Col>
                                         <Col lg="3">
-                                            {editorMode.value == "CREATE" ? (
+                                            {editorMode?.value == "CREATE" ? (
                                                 <FormField
                                                     ref={templateNameRef}
                                                     controlled={true}
@@ -292,7 +298,7 @@ const TemplateEditor = props => {
                                     <div className="col">
                                         <EditorWrapper
                                             title={`Editor`}
-                                            mode={editorMode.value}
+                                            mode={editorMode?.value}
                                             collapse={editorCollapse}
                                             setCollapse={setEditorCollapse}
                                             data={templateData}
