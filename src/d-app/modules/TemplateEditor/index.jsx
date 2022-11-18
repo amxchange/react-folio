@@ -41,7 +41,7 @@ const TemplateEditor = props => {
             setEditorMode(_meta.editorModeOptions[0]);
             setTenantVal(_meta.tenantOptions[0]);
 
-            fetchTemplates();
+            fetchTemplates({ tenant: _meta.tenantOptions[0].value });
         };
 
         init();
@@ -257,7 +257,7 @@ const TemplateEditor = props => {
                                                     label={"Template Name"}
                                                     value={templateNameVal}
                                                     onChange={newVal => {
-                                                        if (/^[a-zA-Z0-9]*$/.test(newVal)) setTemplateNameVal(newVal);
+                                                        if (/^[a-zA-Z0-9_-]*$/.test(newVal)) setTemplateNameVal(newVal);
                                                     }}
                                                     disabled={showEditor}
                                                 />

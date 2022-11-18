@@ -46,7 +46,8 @@ const EditorWrapper = props => {
 
     useEffect(() => {
         if (mode === "UPDATE") {
-            const content = atob(data.content);
+            // const content = atob(data.content);
+            const content = decodeURIComponent(escape(window.atob(data.content)));
             setValue(content);
             if (data.content_data) {
                 setTimeout(() => {
@@ -85,7 +86,8 @@ const EditorWrapper = props => {
             commitMessage: commitMsgVal,
             ...(type !== "DELETE"
                 ? {
-                      content: btoa(value),
+                      //   content: btoa(value),
+                      content: btoa(unescape(encodeURIComponent(value))),
                       content_json,
                       content_data: completetionItemsJsonStr ? JSON.parse(completetionItemsJsonStr) : {}
                   }
