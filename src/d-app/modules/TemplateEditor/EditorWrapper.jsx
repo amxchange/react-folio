@@ -24,6 +24,23 @@ const EDITOR_THEME_OPTIONS = [
     { label: "Light", value: "light" },
     { label: "Dark", value: "vs-dark" }
 ];
+const getDefaultContent = language => {
+    const markupContent = `<html>
+    <head></head>
+    <body>
+        
+    </body>
+</html>`;
+
+    switch (language) {
+        case "html":
+        case "handlebars":
+            return markupContent;
+
+        default:
+            return "";
+    }
+};
 
 const EditorWrapper = props => {
     const { title = "", mode, collapse = false, setCollapse, data = {}, onAction, reset } = props;
@@ -32,7 +49,7 @@ const EditorWrapper = props => {
     const [completetionItemsJsonStr, setCompletetionItemsJsonStr] = useState("");
 
     const emailRef = useRef();
-    const [emailVal, setEmailVal] = useState("");
+    const [emailVal, setEmailVal] = useState("amx@ui.co");
 
     const commitMsgRef = useRef();
     const [commitMsgVal, setCommitMsgVal] = useState("");
@@ -43,6 +60,12 @@ const EditorWrapper = props => {
     const [activeTab, setActiveTab] = useState("editor");
 
     const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (mode === "CREATE") {
+            setValue(getDefaultContent(editorLanguage.value));
+        }
+    }, []);
 
     useEffect(() => {
         if (mode === "UPDATE") {
