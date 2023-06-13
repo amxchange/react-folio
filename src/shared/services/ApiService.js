@@ -5,6 +5,7 @@ export class ApiService {
     constructor({ prefix = "", responseBuilder = res => res } = {}) {
         this.prefix = prefix;
         this.responseBuilder = responseBuilder;
+        this.initInterceptors();
     }
 
     get = (url, data, options) => this.request({ url, method: "get", data, options });
@@ -67,8 +68,55 @@ export class ApiService {
         }
     };
 
+    initInterceptors() {
+        axios.interceptors.response.use(
+            async response => {
+                this.checkDownload(response);
+                return Promise.resolve(response);
+            },
+            error => {
+                if (axios.isCancel(error)) {
+                    console.log("Request canceled", error.message);
+                } else {
+                    let errorData = error.response.data;
+                    let errorMessages = [errorData.message, errorData.messageKey, errorData.error, errorData.errorKey];
+                    error.errorMsg = errorMessages.find(v => !!v);
+                    if (error.request.responseType === "blob") {
+                        let reader = new FileReader();
+                        reader.onload = function () {
+                            let errResp = jsonutil.parse(reader.result);
+                            if (errResp.message) ToastUtil.error(errResp.message);
+                        };
+                        reader.readAsText(error.response.data);
+                    }
+                }
+
+                return Promise.reject(error);
+            }
+        );
+    }
+
     errorResponseInterceptor = ({ url, method, axiosArgs, response }) => {
         return new Promise.resolve();
+    };
+
+    checkDownload = resp => {
+        if (!resp || !resp.headers["content-disposition"]) return;
+        let suppressDownload = resp.config.headers["suppress-download"];
+        let fileName = (resp.headers["content-disposition"] || "attachment; filename=table.pdf")
+            .split(" ")[1]
+            .split("=")[1];
+        const url = this.getUrlFromBlob(resp.data);
+        if (suppressDownload) return url;
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", fileName);
+        document.body.appendChild(link);
+        link.click();
+    };
+
+    getUrlFromBlob = data => {
+        return window.URL.createObjectURL(new Blob([data]));
     };
 
     getUrl = ({ url, options = {} }) => {
