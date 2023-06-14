@@ -18,9 +18,32 @@ const DataGridTablePdf = props => {
     const [loading, setLoading] = useState(false);
 
     const [value, setValue] = useState(`{
-    "headers":[],
-    "data": [],
-    "options": {}
+    "tables": [
+        {
+            "descriptors": [],
+            "data": [],
+            "options": {
+                "page": {
+                    "header": {
+                        "title": "Almulla Exchange",
+                        "styles": {
+                            "font": "roboto"
+                        }
+                    },
+                    "footer": {
+                        "styles": {
+                            "font": "roboto"
+                        }
+                    },
+                    "table": {
+                        "styles": {
+                            "font": "roboto"
+                        }
+                    }
+                }
+            }            
+        }
+    ]
 }`);
 
     const handleValidation = markers => {
