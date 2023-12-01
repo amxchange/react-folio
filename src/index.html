@@ -32,6 +32,13 @@
                 return json;
             }
 
+            const URL_MAP = {
+                local: "http://localhost:3004",
+                dev: "https://node-folio.amxremit.com",
+                qa: "https://nodeb-kwt.almullaexchange.com",
+                prod: "https://node-kwt.almullaexchange.com"
+            };
+
             window.CONST = {
                 dev: false,
                 remoteServerUrl: "https://node-folio.amxremit.com", // "http://localhost:3004"
